@@ -18,8 +18,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(clerkMiddleware());
-app.use(arcjetMiddleware); //NOTE: arcjet is not invoked directly -missing braces () so that it is not executed immediately. instead it is passed as a reference to the express middleware.
+//app.use(arcjetMiddleware); //NOTE: arcjet is not invoked directly -missing braces () so that it is not executed immediately. instead it is passed as a reference to the express middleware.
 
+app.use((req, res, next) => {
+  console.log("REQUEST:", req.method, req.originalUrl);
+  console.log("AUTHORIZATION:", req.headers.authorization ? "PRESENT" : "MISSING");
+  next();
+});
 // ROUTES
 app.get("/", (req, res) => res.send("Hello from server"));
 app.use("/api/users", databaseMiddleware, userRoutes);

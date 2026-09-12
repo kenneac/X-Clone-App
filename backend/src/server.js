@@ -15,7 +15,11 @@ import databaseMiddleware from "./middleware/database.middleware.js";
 const app = express();
 
 // MIDDLEWARE
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: "*",    // Allow ALL origins (for local testing ONLY)
+  credentials: true  // IMPORTANT for cookies/auth
+}));
 app.use(express.json());
 app.use(clerkMiddleware());
 app.use(arcjetMiddleware); //NOTE: arcjet is not invoked directly -missing braces () so that it is not executed immediately. instead it is passed as a reference to the express middleware.

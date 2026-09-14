@@ -3,6 +3,7 @@ import { tokenCache } from "@clerk/expo/token-cache";
 import { Stack } from "expo-router";
 import { ActivityIndicator, Image, Platform, View } from "react-native";
 import * as WebBrowser from "expo-web-browser";
+import { StatusBar } from "expo-status-bar";
 import "../../global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -23,6 +24,7 @@ export default function RootLayout() {
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <QueryClientProvider client={queryClient}>
         <RootNavigator />
+        <StatusBar style="dark"/>
       </QueryClientProvider>
     </ClerkProvider>
   );

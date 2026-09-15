@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend API Documentation - X Clone App</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --sidebar-bg: #2c3e50;
+            --sidebar-text: #ecf0f1;
+            --sidebar-hover: #34495e;
+            --primary-color: #3498db;
+            --card-bg: #fff;
+            --border-color: #ddd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            padding: 0 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar ul li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 15px 20px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: var(--sidebar-hover);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            flex: 1;
+            max-width: 1200px;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        h1 { font-size: 2.5rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; }
+        h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-top: 30px; }
+        
+        p { margin-bottom: 15px; line-height: 1.6; }
+
+        /* Diagrams */
+        .mermaid {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Technologies */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1px));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tech-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .tech-item img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        /* Folder Structure */
+        .folder-tree {
+            font-family: monospace;
+            background: #272822;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* Expandable Sections */
+        details {
+            margin-bottom: 15px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+        }
+        
+        summary {
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            background: rgba(0,0,0,0.02);
+        }
+        
+        details > div {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>X Clone API Docs</h2>
+        <ul>
+            <li><a href="#overview">1. Backend Overview</a></li>
+            <li><a href="#architecture">2. Architecture Diagram</a></li>
+            <li><a href="#request-flow">3. Request Flow Diagram</a></li>
+            <li><a href="#folder-structure">4. Folder Structure</a></li>
+            <li><a href="#technologies">5. Technologies Used</a></li>
+            <li><a href="#api-architecture">6. API Architecture</a></li>
+            <li><a href="#auth-flow">7. Authentication Flow</a></li>
+            <li><a href="#database-layer">8. Database Layer</a></li>
+            <li><a href="#middleware">9. Middleware Pipeline</a></li>
+            <li><a href="#external-services">10. External Services</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>X Clone App - Backend API Documentation</h1>
+
+        <!-- 1. Backend Overview -->
+        <section id="overview">
+            <h2>1. Backend Overview</h2>
+            <p>The backend of the X Clone App is a robust, RESTful API built with <strong>Node.js</strong> and <strong>Express.js</strong>. It serves as the core engine for user interactions, social networking features, and data management.</p>
+            <p><strong>Main Purpose:</strong> To handle user authentication (via Clerk), manage social posts, process comments, track user relationships (followers/following), and deliver real-time-like notifications.</p>
+            <p><strong>Overall Architecture:</strong> The application follows a Model-View-Controller (MVC) inspired architecture tailored for APIs (Model-Route-Controller). It uses MongoDB with Mongoose for data persistence, Cloudinary for media storage, and Arcjet for security/rate-limiting middleware.</p>
+        </section>
+
+        <!-- 2. Architecture Diagram -->
+        <section id="architecture">
+            <h2>2. Architecture Diagram</h2>
+            <div class="mermaid">
+                graph TD
+                    Client[Client App] -->|HTTP Requests| Server[Express API Server]
+                    Server --> MW[Middleware Layer]
+                    MW --> Routes[Route Handlers]
+                    Routes --> Controllers[Controllers]
+                    Controllers --> Models[Mongoose Models]
+                    Models --> DB[(MongoDB Database)]
+                    
+                    MW -.-> Clerk[Clerk Auth Service]
+                    MW -.-> Arcjet[Arcjet Security]
+                    
+                    Controllers -.-> Cloudinary[Cloudinary Media Storage]
+            </div>
+        </section>
+
+        <!-- 3. Request Flow Diagram -->
+        <section id="request-flow">
+            <h2>3. Request Flow Diagram</h2>
+            <p>A typical request lifecycle within the Express application.</p>
+            <div class="mermaid">
+                sequenceDiagram
+                    participant C as Client
+                    participant S as Express Server
+                    participant M as Middleware (CORS, JSON, Arcjet, DB Check)
+                    participant A as Auth (Clerk / auth.middleware)
+                    participant R as Route
+                    participant Ctrl as Controller
+                    participant DB as Database
+                    
+                    C->>S: HTTP Request
+                    S->>M: Process Request
+                    M->>A: Verify Authentication
+                    A->>R: Match Route Endpoint
+                    R->>Ctrl: Execute Business Logic
+                    Ctrl->>DB: Query / Mutate Data
+                    DB-->>Ctrl: Return Result
+                    Ctrl-->>S: Format HTTP Response
+                    S-->>C: Send Response
+            </div>
+        </section>
+
+        <!-- 4. Folder Structure -->
+        <section id="folder-structure">
+            <h2>4. Folder Structure</h2>
+            <div class="folder-tree">
+backend/
+├── src/
+│   ├── config/            # Configuration files (DB, ENV, Arcjet, Cloudinary)
+│   │   ├── arcjet.js
+│   │   ├── cloudinary.js
+│   │   ├── db.js
+│   │   └── env.js
+│   ├── controllers/       # Business logic for endpoints
+│   │   ├── comment.controller.js
+│   │   ├── notification.controller.js
+│   │   ├── post.controller.js
+│   │   └── user.controller.js
+│   ├── middleware/        # Express middleware functions
+│   │   ├── arcjet.middleware.js
+│   │   ├── auth.middleware.js
+│   │   ├── database.middleware.js
+│   │   └── upload.middleware.js
+│   ├── models/            # Mongoose schemas and models
+│   │   ├── comment.model.js
+│   │   ├── notification.model.js
+│   │   ├── post.model.js
+│   │   └── user.model.js
+│   ├── routes/            # API route definitions
+│   │   ├── comment.route.js
+│   │   ├── notification.route.js
+│   │   ├── post.route.js
+│   │   └── user.route.js
+│   └── server.js          # Entry point and Express app setup
+├── package.json           # Dependencies and scripts
+└── vercel.json            # Deployment configuration
+            </div>
+        </section>
+
+        <!-- 5. Technologies Used -->
+        <section id="technologies">
+            <h2>5. Technologies Used</h2>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                <div class="tech-item"><strong>Node.js</strong><br>Runtime</div>
+                <div class="tech-item"><strong>Express</strong><br>Web Framework</div>
+                <div class="tech-item"><strong>MongoDB</strong><br>Database</div>
+                <div class="tech-item"><strong>Mongoose</strong><br>ODM</div>
+                <div class="tech-item"><strong>Clerk</strong><br>Authentication</div>
+                <div class="tech-item"><strong>Cloudinary</strong><br>Media Storage</div>
+                <div class="tech-item"><strong>Arcjet</strong><br>Security Layer</div>
+                <div class="tech-item"><strong>Multer</strong><br>File Uploads</div>
+            </div>
+        </section>
+
+        <!-- 6. API Architecture -->
+        <section id="api-architecture">
+            <h2>6. API Architecture</h2>
+            <p>The API is organized into domain-specific resource groups mapped under the <code>/api</code> prefix.</p>
+            <details>
+                <summary>Route Groups</summary>
+                <div>
+                    <ul>
+                        <li><code>/api/users</code> - User profiles, follow/unfollow actions, suggestions.</li>
+                        <li><code>/api/posts</code> - Create, read, update, delete posts, and likes handling.</li>
+                        <li><code>/api/comments</code> - Manage comments on specific posts.</li>
+                        <li><code>/api/notifications</code> - Fetch user notifications and mark them as read.</li>
+                    </ul>
+                </div>
+            </details>
+        </section>
+
+        <!-- 7. Authentication Flow -->
+        <section id="auth-flow">
+            <h2>7. Authentication Flow</h2>
+            <p>Authentication is heavily managed by Clerk, integrated via <code>@clerk/express</code>.</p>
+            <div class="mermaid">
+                flowchart TD
+                    Client[Client App] -->|Login/Register| ClerkUI[Clerk UI/SDK]
+                    ClerkUI -->|Returns Session Token| Client
+                    Client -->|API Request + Token| Server[Express API]
+                    Server --> ClerkMW[Clerk Middleware]
+                    ClerkMW -->|Token Valid?| Valid{Yes/No}
+                    Valid -->|No| 401[401 Unauthorized]
+                    Valid -->|Yes| NextMW[Next Middleware / Route]
+                    NextMW --> AuthMW[auth.middleware.js]
+                    AuthMW --> DBCheck[Ensure User in DB]
+                    DBCheck --> Controller[Protected Controller Logic]
+            </div>
+        </section>
+
+        <!-- 8. Database Layer -->
+        <section id="database-layer">
+            <h2>8. Database Layer (Entity Relationship)</h2>
+            <p>The database uses MongoDB. Below is the relationship structure between collections based on Mongoose schemas.</p>
+            <div class="mermaid">
+                erDiagram
+                    USER {
+                        ObjectId _id PK
+                        String clerkId
+                        String email
+                        String username
+                        String firstName
+                        String lastName
+                        ObjectId[] followers
+                        ObjectId[] following
+                    }
+                    POST {
+                        ObjectId _id PK
+                        ObjectId user FK
+                        String content
+                        String image
+                        ObjectId[] likes
+                        ObjectId[] comments FK
+                    }
+                    COMMENT {
+                        ObjectId _id PK
+                        ObjectId user FK
+                        ObjectId post FK
+                        String content
+                        ObjectId[] likes
+                    }
+                    NOTIFICATION {
+                        ObjectId _id PK
+                        ObjectId from FK
+                        ObjectId to FK
+                        String type
+                        ObjectId post FK
+                        ObjectId comment FK
+                    }
+
+                    USER ||--o{ POST : "creates"
+                    USER ||--o{ COMMENT : "writes"
+                    USER ||--o{ NOTIFICATION : "receives/triggers"
+                    POST ||--o{ COMMENT : "has"
+            </div>
+        </section>
+
+        <!-- 9. Middleware Pipeline -->
+        <section id="middleware">
+            <h2>9. Middleware Pipeline</h2>
+            <div class="mermaid">
+                graph LR
+                    Req[Incoming Request] --> CORS[cors]
+                    CORS --> JSON[express.json]
+                    JSON --> Clerk[clerkMiddleware]
+                    Clerk --> Arcjet[arcjetMiddleware]
+                    Arcjet --> DBCheck[databaseMiddleware]
+                    DBCheck --> RouteHandler[Specific Route Handlers]
+                    RouteHandler --> Err[Error Handler 500]
+            </div>
+        </section>
+
+        <!-- 10. External Services -->
+        <section id="external-services">
+            <h2>10. External Services</h2>
+            <ul>
+                <li><strong>Clerk:</strong> Provides robust identity and access management. Handled via standard middleware provided by Clerk.</li>
+                <li><strong>Cloudinary:</strong> Used for image hosting (profile pictures, post images). Handled via <code>cloudinary.js</code> config and <code>upload.middleware.js</code>.</li>
+                <li><strong>Arcjet:</strong> Application security layer, providing bot protection and rate limiting integrated at the middleware level.</li>
+                <li><strong>MongoDB Atlas (implied):</strong> Cloud-hosted NoSQL database used for persistent data storage.</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+
+        // Smooth Scrolling for Sidebar Links
+        document.querySelectorAll('.sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
